@@ -10,7 +10,7 @@ local function alacritty_msg_cursor_color(fg, bg)
   })
 end
 
-local function alacritty_msg_set_bg(bg)
+function M.alacritty_msg_set_bg(bg)
   return vim.system({
     "alacritty",
     "msg",
@@ -19,7 +19,7 @@ local function alacritty_msg_set_bg(bg)
   })
 end
 
-local function set_alacritty_cursor()
+function M.set_alacritty_cursor()
   local cursor_color = vim.api.nvim_get_hl(0, { name = "Cursor", link = false })
   if cursor_color.fg and cursor_color.bg then
     local fg = string.format("#%06x", cursor_color.fg)
@@ -39,10 +39,10 @@ function M.setup()
   -- for further colorscheme changes, set up an autocommand
   vim.api.nvim_create_autocmd("Colorscheme", {
     group = vim.api.nvim_create_augroup("alacritty_cursor_grp", { clear = true }),
-    callback = set_alacritty_cursor,
+    callback = M.set_alacritty_cursor,
   })
 
-  set_alacritty_cursor()
+  M.set_alacritty_cursor()
 
   vim.api.nvim_create_autocmd("VimLeave", {
     callback = function()
