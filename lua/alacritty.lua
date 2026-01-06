@@ -86,7 +86,7 @@ end
 
 ---@param opts { verbose: boolean }? options for `alacritty.nvim`
 function M.setup(opts)
-  opts = opts or { verbose = true }
+  opts = opts or { verbose = false }
 
   M.verbose = opts.verbose
 
