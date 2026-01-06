@@ -1,5 +1,13 @@
+block_newline_gaps = "Never"
+call_parentheses = "Always"
+collapse_simple_statement = "FunctionOnly"
+column_width = 80
 indent_type = "Spaces"
 indent_width = 2
-column_width = 120
+line_endings = "Unix"
+quote_style = "AutoPreferDouble"
+space_after_function_names = "Never"
+syntax = "LuaJIT"
+
 [sort_requires]
 enabled = true
