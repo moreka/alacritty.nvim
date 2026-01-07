@@ -66,10 +66,13 @@ function M.set_cursor_color_from_colorscheme()
   local cs_cursor_hlgroup =
     vim.api.nvim_get_hl(0, { name = "Cursor", link = false })
   if cs_cursor_hlgroup.fg and cs_cursor_hlgroup.bg then
-    cursor_color = {
-      fg = string.format("#%06x", cs_cursor_hlgroup.fg),
-      bg = string.format("#%06x", cs_cursor_hlgroup.bg),
-    }
+    local fg = string.format("#%06x", cs_cursor_hlgroup.fg)
+    local bg = string.format("#%06x", cs_cursor_hlgroup.bg)
+    if cs_cursor_hlgroup.reverse then
+      cursor_color = { fg = bg, bg = fg }
+    else
+      cursor_color = { fg = fg, bg = bg }
+    end
   else
     M.dbg(
       "Your colorscheme does not define the highlight group `Cursor` with a "
