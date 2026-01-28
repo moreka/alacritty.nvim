@@ -12,7 +12,7 @@ local M = {}
 ---
 ---@param msg string the message to be logged
 function M.dbg(msg)
-  if M.verbose then
+  if vim.g.alacritty_verbose then
     vim.notify(msg, vim.log.levels.DEBUG)
   end
 end
@@ -85,40 +85,6 @@ function M.set_cursor_color_from_colorscheme()
     end
   end
   vim.schedule(function() M.send_cursor_color_msg(cursor_color) end)
-end
-
----@param opts { verbose: boolean }? options for `alacritty.nvim`
-function M.setup(opts)
-  opts = opts or { verbose = false }
-
-  M.verbose = opts.verbose
-
-  if vim.env.ALACRITTY_WINDOW_ID == nil then
-    M.dbg("Not running Alacritty. This plugin has no effect.")
-    return
-  end
-
-  local grp =
-    vim.api.nvim_create_augroup("alacritty_cursor_grp", { clear = true })
-
-  vim.api.nvim_create_autocmd({ "ColorScheme", "VimResume" }, {
-    group = grp,
-    callback = M.set_cursor_color_from_colorscheme,
-    desc = "Sets Alacritty cursor color to match the current colorscheme",
-  })
-
-  local current_cursor_color = M.get_cursor_color()
-  vim.schedule(function() M.set_cursor_color_from_colorscheme() end)
-
-  vim.api.nvim_create_autocmd({ "VimLeavePre", "VimSuspend" }, {
-    group = grp,
-    callback = function()
-      vim.schedule(function()
-        M.send_cursor_color_msg(current_cursor_color)
-      end)
-    end,
-    desc = "Resets the Alacritty cursor color to its original value",
-  })
 end
 
 return M
