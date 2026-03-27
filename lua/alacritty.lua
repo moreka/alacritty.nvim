@@ -1,10 +1,9 @@
 local M = {}
 
----@class CursorColor
 ---A cursor color with foreground and background. Allowed values are hexadecimal
 ---colors like `"#ff00ff"`, or `"CellForeground"`/`"CellBackground"`, which
 ---references the affected cell.
----
+---@class CurColor
 ---@field bg string
 ---@field fg string
 
@@ -19,7 +18,7 @@ end
 
 ---Sends Alacritty an IPC message to change its cursor color
 ---
----@param color CursorColor
+---@param color CurColor
 ---@return vim.SystemCompleted
 function M.send_cursor_color_msg(color)
   M.dbg("Setting cursor color to " .. vim.inspect(color))
@@ -39,7 +38,7 @@ end
 ---
 ---**NOTE:** this IPC message was introduced in Alacritty 0.16.
 ---
----@return CursorColor
+---@return CurColor
 function M.get_cursor_color()
   local alacritty_config =
     vim.system({ "alacritty", "msg", "get-config" }):wait()
